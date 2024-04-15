@@ -105,6 +105,11 @@ const formValidation = formSelector =>{
         if(e.target.matches("[prevPage]")){
             currentPage += increment;
             input=Array.from(formStep[currentPage].querySelectorAll('input'));
+            const btn = Array.from(document.getElementsByClassName('nextButton'));
+            btn.forEach( (val,index)=>{
+                val.style.disabled = false;
+                val.style.cursor = "pointer"
+            })
             showCurrentPage();
         }
         else if(checkValidation(formStep[currentPage])){
@@ -223,6 +228,13 @@ const formValidation = formSelector =>{
                     flag = false;
                 }
             }
+        }
+        if(!flag){
+            const btn = Array.from(document.getElementsByClassName('nextButton'));
+            btn.forEach( (val,index)=>{
+                val.style.disabled = true;
+                val.style.cursor = "no-drop"
+            })
         }
         return flag;
     }
@@ -564,6 +576,11 @@ function checkAadhar(aadhar,key){
 function checkField(event,fieldName){
     let val = event.target.value;
     let key = event.key;
+    const btn = Array.from(document.getElementsByClassName('nextButton'));
+    btn.forEach( (val,index)=>{
+        val.style.disabled = false;
+        val.style.cursor = "pointer"
+    })
     if(fieldName === 'fullName' && checkName(val,key)){
         let error = document.getElementById("nameErrorContainer")
         error.innerText = "** invalid user name"
