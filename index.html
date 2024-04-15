@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Js form validation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./assets/stylesheets/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+</head>
+<body>
+    <div class="backgroundContainer position-fixed"></div>
+    
+    <div class="mainContent m-auto">
+        <div class="w-100 d-flex col-12">
+            <video src="./assets/video/backgroundVideo.mp4" width="100%" height="100%" autoplay loop muted class="videoContainer"></video>
+        <div class="mainContentLeft col-6 px-5 py-5 position-relative d-flex flex-column justify-content-center">
+            <h1 class="text-white display-5 fw-bold">Registration Form.</h1>
+            <p class="text-white pt-4">Welcome to our employee registration form! We're thrilled to have you join our team. To begin the registration process, please fill out the following details accurately. </p>
+
+            <div class="loginViaSocialMedia d-flex gap-4 py-4">
+                <div class="facebook text-white d-flex gap-2 align-items-center px-3 py-1 bg-primary ">
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </div>
+                <div class="google text-white d-flex gap-2 align-items-center px-3 py-1 bg-success">
+                    <i class="fa-brands fa-google"></i>
+                    <span>Google</span>
+                </div>
+            </div>
+        </div>
+        <div class="mainContentRight col-6 py-4 px-5">
+            <form id="registrationForm" multiStepForm>
+                <div class="pageOne pages" formStep>
+                    <h3 class="text-center mb-5">Please fill the following details.</h3>
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <div class="d-flex align-items-center">
+                            <input name="Full Name" type="text" class="form-control" id="fullName" required pattern="^[a-zA-Z\s.]{1,80}$" onkeyup="checkField(event,'fullName')">
+                            <span class="errorDanger text-danger" id="userNameDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="userNameSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger" id="nameErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="emailId" class="form-label">Email Id</label>
+                        <div class="d-flex align-items-center">
+                            <input type="email" name="Email Id" class="form-control" id="emailId" required pattern="^[0-9a-zA-Z._]{1,}@[a-zA-Z]{3,}[.]{1}[a-zA-Z.]{2,6}$" onkeyup="checkField(event,'emailId')">
+                            <span class="errorDanger text-danger" id="userEmailDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="userEmailSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger" id="emailErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="userPassword" class="form-label">Password</label>
+                        <div class="d-flex align-items-center" style="gap: 11px;">
+                            <input type="password" name="Password" class="form-control" id="userPassword" required customMinLength="8" onkeyup="checkField(event,'password')">
+                            <span class="errorDanger text-danger" id="userPasswordDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="userPasswordSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                            <span class="eyeIcon" onclick="displayPassword(event,'userPassword')" style="cursor: pointer;">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger" id="passwordErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div class="d-flex align-items-center" style="gap: 11px;">
+                            <input type="password" name="Confirm Password" class="form-control" id="confirmPassword" required match="userPassword" onkeyup="checkField(event,'confirmPassword')">
+                            <span class="errorDanger text-danger" id="confirmPasswordDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="confirmPasswordSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                            <span class="eyeIcon" onclick="displayPassword(event,'confirmPassword')" style="cursor: pointer;">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger "  id="confirmPasswordErrorContainer"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-end inputFieldDiv">
+                        <button type="button" class="nextButton px-4" nextPage>Next</button>
+                    </div>
+                </div>
+
+
+                <div class="pageTwo pages" formStep>
+                    <h3 class="text-center mb-5">Please fill the following details.</h3>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="gender" class="form-label">Gender</label>
+                        <div class="d-flex align-items-center">
+                            <select name="Gender" id="gender" class="form-select" required onclick="removeGenderError(event)">
+                                <option selected value="">Select your gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="errorMessage text-danger" id="genderErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="address" class="form-label">Address</label>
+                        <div class="d-flex align-items-center">
+                            <textarea name="Address" id="address" rows="3" class=" form-control" style="resize: none;" required  onkeyup="checkField(event,'address')"></textarea>
+
+                            <span class="errorDanger text-danger" id="addressdDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="addressdSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger" id="addressErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="phoneno" class="form-label">Phone No.</label>
+                        <div class="d-flex align-items-center">
+                            <input name="Phone No." type="text" class="form-control" id="phoneno" required exactLength="10" maxlength="10" onkeyup="checkField(event,'phoneNo')" pattern="^[0-9]{10}$">
+                            <span class="errorDanger text-danger" id="phoneNoDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="phoneNoSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger" id="phoneNoErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="aadharCardNo" class="form-label">Aadhar Card No.</label>
+                        <div class="d-flex align-items-center">
+                            <input name="Aadhar Card No." type="text" class="form-control" id="aadharCardNo" placeholder="enter your 12 digit aadhar card no." required pattern="^[0-9]{12}$" onkeyup="checkField(event,'aadharCardNo')" maxlength="12">
+                            <span class="errorDanger text-danger" id="aadharCardDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="aadharCardSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger" id="aadharCardErrorContainer"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-end inputFieldDiv gap-4">
+                        <button type="button" class="px-4" prevPage>Previous</button>
+                        <button type="button" class="px-4" nextPage>Next</button>
+                    </div>
+                </div>
+
+                <div class="pageThree pages" formStep>
+                    <h3 class="text-center mb-5">Please fill the following details.</h3>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="maritalStat" class="form-label">Marital Status</label>
+                        <div class="d-flex align-items-center">
+                            <select name="Marital Status" id="maritalStat" class="form-select" required onclick="removeMaritalError(event)">
+                                <option selected value="">Please Select</option>
+                                <option value="Married">Married</option>
+                                <option value="Unmarried">Unmarried</option>
+                            </select>
+                        </div>
+                        <div class="errorMessage text-danger" id="maritalStatErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="jobProfile" class="form-label">Job Profile</label>
+                        <div class="d-flex align-items-center">
+                            <select name="Job Profile" id="jobProfile" class="form-select" required onclick="jobProfileError(event)">
+                                <option selected value="">Please Select Your Job Profile</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Hr">Hr</option>
+                                <option value="Developer">Developer</option>
+                                <option value="Tester">Tester</option>
+                                <option value="Designer">Designer</option>
+                            </select>
+                        </div>
+                        <div class="errorMessage text-danger" id="jobProfileErrorContainer"></div>
+                    </div>
+
+                    <div class="mb-3 inputFieldDiv">
+                        <label for="addNotes" class="form-label">Additional Notes</label>
+                        <div class="d-flex align-items-center">
+                            <textarea name="Additional Notes" id="addNotes" rows="3" class=" form-control" style="resize: none;" required  onkeyup="checkField(event,'additionalNotes')"></textarea>
+
+                            <span class="errorDanger text-danger" id="additionalNotesDangerIcon">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                            <span class="errorSuccess text-success" id="additionalNotesSuccessIcon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="errorMessage text-danger" id="additionalNotesErrorContainer"></div>
+                    </div>
+
+
+
+                    <div class="d-flex justify-content-end inputFieldDiv gap-4">
+                        <button type="button" class="px-4" prevPage>Previous</button>
+                        <button type="submit" class="px-4" nextPage>Next</button>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <div class="spinnerContainer" id="spin">
+        <div class="spinner-border text-primary chakri" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- <script src="./assets/javaScripts/index.js"></script> -->
+    <!-- <script src="./assets/javaScripts/index2.js"></script> -->
+    <script src="index.js"></script>
+</body>
+</html>
