@@ -104,11 +104,12 @@ const formValidation = formSelector =>{
         if(increment == null)   return;
         if(e.target.matches("[prevPage]")){
             currentPage += increment;
-            input=Array.from(formStep[currentPage].querySelectorAll('input'));
+            // input=Array.from(formStep[currentPage].querySelectorAll('input'));
             const btn = Array.from(document.getElementsByClassName('nextButton'));
             btn.forEach( (val,index)=>{
                 val.style.disabled = false;
                 val.style.cursor = "pointer"
+                val.style.opacity = 1;
             })
             showCurrentPage();
         }
@@ -198,8 +199,6 @@ const formValidation = formSelector =>{
             };
         })
 
-
-
         function containsSelect(element) {
             return element.querySelector('select') !== null;
         }
@@ -233,6 +232,7 @@ const formValidation = formSelector =>{
             const btn = Array.from(document.getElementsByClassName('nextButton'));
             btn.forEach( (val,index)=>{
                 val.style.disabled = true;
+                val.style.opacity = "0.5"
                 val.style.cursor = "no-drop"
             })
         }
@@ -267,9 +267,9 @@ function errorStyling(errorContainer,dangerIconContainer,successIconContainer,bo
     let succesIcon = document.getElementById(`${successIconContainer}`);
     let inputField = document.getElementById(`${box}`);
     if(val === 0){
-        dangerIcon.style.display="none";
+        dangerIcon.style.display="block";
         succesIcon.style.display="none";
-        inputField.classList.remove('border-danger')
+        inputField.classList.add('border-danger')
         inputField.classList.remove('border-success')   
         error.innerText = "** field can not be empty"
     }
@@ -288,26 +288,48 @@ function errorStyling(errorContainer,dangerIconContainer,successIconContainer,bo
     }
 }
 
+function fullNameKeyCheck(e){
+    let key = e.key;
+    if(!(key>='a' && key<='z') && (key !=='Backspace') && key != ' '){
+        e.preventDefault();
+        let errorcont = document.getElementById("nameErrorContainer");
+        errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',-1);
+        errorcont.innerText = "** only alphabets are allowed";
+        return false;
+    }
+    return true;
+}
 
-function checkName(fullName,key){
+function checkName(fullName,key,e){
     let val = fullName;
-    // console.log(key)
     let ch = key.toLowerCase();
     let inputField = document.getElementById("fullName");
-    const regexFullName = /^[a-zA-Z\s.]{1,30}$/
-    let flag = regexFullName.test(val);
     inputField.classList.add('border-2')
-        if(val.length == 0){
-            errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',0);
-        }
-        else if ((!(ch >= 'a' && ch <= 'z') && ch !== 'Backspace' && ch != ' ') || !flag) {
-            errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',-1);
-            return true;
-        }
-        else{
-            errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',1);
-            return false;
-        }
+    let error = document.getElementById('nameErrorContainer');
+    if ((!(ch >= 'a' && ch <= 'z') && ch !== 'Backspace' && ch != ' ')) {
+        errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',-1);
+        e.preventDefault();
+        return true;
+    }
+    else if(val.length == 0 && ch === ' '){
+        errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',-1);
+        error.innerText = "** spaces are not allowed at start"
+        e.preventDefault();
+        return false;
+    }
+    else if(ch === ' ' && val.at(-1) === ' '){
+        e.preventDefault();
+        return false;
+    }
+    
+    else if((val.length ==1 || val.length ==0) && ch == 'backspace'){
+        errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',-1);
+        error.innerText = "** field can not be empty"
+    }
+    else{
+        errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',1);
+        return false;
+    }
 }
 
 function checkEmail(emailId,key){
@@ -454,6 +476,15 @@ function checkJobProfile(){
     }
 }
 
+function enableBtn(){
+    const btn = Array.from(document.getElementsByClassName('nextButton'));
+    btn.forEach( (val,index)=>{
+        val.style.disabled = false;
+        val.style.cursor = "pointer"
+        val.style.opacity = 1;
+    })
+}
+
 function removeGenderError(event){
     let error = document.getElementById("genderErrorContainer");
     let inputField = document.getElementById("gender");
@@ -461,6 +492,7 @@ function removeGenderError(event){
     inputField.classList.remove("border-danger");
     inputField.classList.add("border-success");
     checkGender()
+    enableBtn();
 }
 
 function removeMaritalError(event){
@@ -470,6 +502,7 @@ function removeMaritalError(event){
     inputField.classList.remove("border-danger");
     inputField.classList.add("border-success");
     checkMaritalStatus();
+    enableBtn();
 }
 
 
@@ -480,6 +513,7 @@ function jobProfileError(event){
     inputField.classList.remove("border-danger");
     inputField.classList.add("border-success");
     checkJobProfile();
+    enableBtn();
 }
 
 function addressCheck(addressVal){
@@ -504,33 +538,37 @@ function checkAdditionalNotes(additionalNotes){
     }
 }
 
-function checkPhone(phoneNo,key){
+function checkPhone(phoneNo,key,e){
     let error = document.getElementById("phoneNoErrorContainer")
-    const regexPhoneNo = /^[123456789][0-9]{9}$/;
-    let phoneInInt = phoneNo;
     let inputField = document.getElementById("phoneno");
     inputField.classList.add('border-2')
     phoneNo = phoneNo.toString();
-    phoneNo = phoneNo.trimEnd();
-    if(phoneNo.length === 0){
-        errorStyling('phoneNoErrorContainer','phoneNoDangerIcon','phoneNoSuccessIcon','phoneno',0);
-        error.innerText = "** phone no can not be empty"
+
+    if(!(key>=0 && key<=9) && key != 'Backspace' && key != 'ArrowDown' && key != 'ArrowRight' && key != 'ArrowUp' && key != 'ArrowLeft'){
+        e.preventDefault();
+        errorStyling('phoneNoErrorContainer','phoneNoDangerIcon','phoneNoSuccessIcon','phoneno',-1);
+        error.innerText = "** phone no contains only digits"
         return false;
     }
-    if(!regexPhoneNo.test(phoneInInt)){
-        errorStyling('phoneNoErrorContainer','phoneNoDangerIcon','phoneNoSuccessIcon','phoneno',-1);
-        error.innerText = "** invalid phone no"
+
+    else if(phoneNo.length == 0 && key === ' '){
+        errorStyling('nameErrorContainer','userNameDangerIcon','userNameSuccessIcon','fullName',-1);
+        error.innerText = "** spaces are not allowed at start"
+        e.preventDefault();
         return false;
     }
-    if( !(key>=0 && key<=9) && key != 'Backspace' && key != 'ArrowDown' && key != 'ArrowRight' && key != 'ArrowUp' && key != 'ArrowLeft'){
-        errorStyling('phoneNoErrorContainer','phoneNoDangerIcon','phoneNoSuccessIcon','phoneno',-1);
-        error.innerText = "** phone no contains only digits";
+    else if(key == ' '){
+        e.preventDefault();
+        return false;
     }
-    else if(phoneNo.length >0 && phoneNo.length < 10){
+    else if( (phoneNo.length == 1 || phoneNo.length == 0) && key == 'Backspace'){
         errorStyling('phoneNoErrorContainer','phoneNoDangerIcon','phoneNoSuccessIcon','phoneno',-1);
         return true;
     }
-    
+    else if((phoneNo.length>=0 && phoneNo.length<9) || (phoneNo.length == 10 && key == 'Backspace')){
+        errorStyling('phoneNoErrorContainer','phoneNoDangerIcon','phoneNoSuccessIcon','phoneno',-1);
+        return true;
+    }
     else{
         error.innerHTML = "";
         errorStyling('phoneNoErrorContainer','phoneNoDangerIcon','phoneNoSuccessIcon','phoneno',1);
@@ -538,33 +576,36 @@ function checkPhone(phoneNo,key){
     }
 }
 
-function checkAadhar(aadhar,key){
+function checkAadhar(aadhar,key,e){
     let error = document.getElementById("aadharCardErrorContainer")
-    const regexAadhar = /^[0-9]{12}$/;
-    let aadharInt = aadhar;
     let inputField = document.getElementById("aadharCardNo");
     inputField.classList.add('border-2')
     aadhar = aadhar.toString();
-    aadhar = aadhar.trimEnd();
-    if(aadhar.length === 0){
-        errorStyling('aadharCardErrorContainer','aadharCardDangerIcon','aadharCardSuccessIcon','aadharCardNo',0);
-        error.innerText = "** aadhar card no. can not be empty"
+    if(!(key>=0 && key<=9) && key != 'Backspace' && key != 'ArrowDown' && key != 'ArrowRight' && key != 'ArrowUp' && key != 'ArrowLeft'){
+        e.preventDefault();
+        errorStyling('aadharCardErrorContainer','aadharCardDangerIcon','aadharCardSuccessIcon','aadharCardNo',-1);
+        error.innerText = "** Aadhar card contains only digits"
         return false;
     }
-    if(!regexAadhar.test(aadharInt)){
+
+    else if(aadhar.length == 0 && key === ' '){
         errorStyling('aadharCardErrorContainer','aadharCardDangerIcon','aadharCardSuccessIcon','aadharCardNo',-1);
-        error.innerText = "** invalid aadhar card no"
+        error.innerText = "** spaces are not allowed at start"
+        e.preventDefault();
         return false;
     }
-    if( !(key>=0 && key<=9) && key != 'Backspace' && key != 'ArrowDown' && key != 'ArrowRight' && key != 'ArrowUp' && key != 'ArrowLeft'){
-        errorStyling('aadharCardErrorContainer','aadharCardDangerIcon','aadharCardSuccessIcon','aadharCardNo',-1);
-        error.innerText = "** aadhar card contains only digits";
+    else if(key == ' '){
+        e.preventDefault();
+        return false;
     }
-    else if(aadhar.length >0 && aadhar.length < 10){
+    else if( (aadhar.length == 1 || aadhar.length == 0) && key == 'Backspace'){
         errorStyling('aadharCardErrorContainer','aadharCardDangerIcon','aadharCardSuccessIcon','aadharCardNo',-1);
         return true;
     }
-    
+    else if((aadhar.length>=0 && aadhar.length<11) || (aadhar.length == 12 && key == 'Backspace')){
+        errorStyling('aadharCardErrorContainer','aadharCardDangerIcon','aadharCardSuccessIcon','aadharCardNo',-1);
+        return true;
+    }
     else{
         error.innerHTML = "";
         errorStyling('aadharCardErrorContainer','aadharCardDangerIcon','aadharCardSuccessIcon','aadharCardNo',1);
@@ -580,10 +621,11 @@ function checkField(event,fieldName){
     btn.forEach( (val,index)=>{
         val.style.disabled = false;
         val.style.cursor = "pointer"
+        val.style.opacity = 1;
     })
-    if(fieldName === 'fullName' && checkName(val,key)){
+    if(fieldName === 'fullName' && checkName(val,key,event)){
         let error = document.getElementById("nameErrorContainer")
-        error.innerText = "** invalid user name"
+        error.innerText = "** only alphabets are allowed"
     }
     else if(fieldName === 'emailId' && checkEmail(val,key)){
         let error = document.getElementById("emailErrorContainer");
@@ -604,11 +646,11 @@ function checkField(event,fieldName){
         let error = document.getElementById("addressErrorContainer");
         error.innerText = "** address can't be empty";
     }
-    else if(fieldName == 'phoneNo' && checkPhone(val,key)){
+    else if(fieldName == 'phoneNo' && checkPhone(val,key,event)){
         let error = document.getElementById("phoneNoErrorContainer")
         error.innerText = "** please enter 10 digit phone no.";
     }
-    else if(fieldName == 'aadharCardNo' && checkAadhar(val,key)){
+    else if(fieldName == 'aadharCardNo' && checkAadhar(val,key,event)){
         let error = document.getElementById("aadharCardErrorContainer")
         error.innerText = "** please enter 12 digit aadhar card no.";
     }

@@ -37,7 +37,8 @@
                     <div class="mb-3 inputFieldDiv">
                         <label for="fullName" class="form-label">Full Name</label>
                         <div class="d-flex align-items-center">
-                            <input name="Full Name" type="text" class="form-control" id="fullName" required pattern="^[a-zA-Z\s.]{1,80}$" onkeyup="checkField(event,'fullName')">
+                            <!-- <input name="Full Name" type="text" class="form-control" id="fullName" required pattern="^[a-zA-Z\s.]{1,80}$" onkeyup="checkField(event,'fullName')"> -->
+                            <input name="Full Name" type="text" class="form-control" id="fullName" required pattern="^[a-zA-Z\s.]{1,80}$" onkeydown="checkField(event,'fullName')">
                             <span class="errorDanger text-danger" id="userNameDangerIcon">
                                 <i class="fa-solid fa-circle-exclamation"></i>
                             </span>
@@ -136,7 +137,8 @@
                     <div class="mb-3 inputFieldDiv">
                         <label for="phoneno" class="form-label">Phone No.</label>
                         <div class="d-flex align-items-center">
-                            <input name="Phone No." type="text" class="form-control" id="phoneno" required exactLength="10" maxlength="10" onkeyup="checkField(event,'phoneNo')" pattern="^[0-9]{10}$">
+                            <!-- <input name="Phone No." type="text" class="form-control" id="phoneno" required exactLength="10" maxlength="10" onkeyup="checkField(event,'phoneNo')" pattern="^[0-9]{10}$"> -->
+                            <input name="Phone No." type="text" class="form-control" id="phoneno" required exactLength="10" maxlength="10" onkeydown="checkField(event,'phoneNo')" pattern="^[0-9]{10}$">
                             <span class="errorDanger text-danger" id="phoneNoDangerIcon">
                                 <i class="fa-solid fa-circle-exclamation"></i>
                             </span>
@@ -150,7 +152,8 @@
                     <div class="mb-3 inputFieldDiv">
                         <label for="aadharCardNo" class="form-label">Aadhar Card No.</label>
                         <div class="d-flex align-items-center">
-                            <input name="Aadhar Card No." type="text" class="form-control" id="aadharCardNo" placeholder="enter your 12 digit aadhar card no." required pattern="^[0-9]{12}$" onkeyup="checkField(event,'aadharCardNo')" maxlength="12">
+                            <!-- <input name="Aadhar Card No." type="text" class="form-control" id="aadharCardNo" placeholder="enter your 12 digit aadhar card no." required pattern="^[0-9]{12}$" onkeyup="checkField(event,'aadharCardNo')" maxlength="12"> -->
+                            <input name="Aadhar Card No." type="text" class="form-control" id="aadharCardNo" placeholder="enter your 12 digit aadhar card no." required pattern="^[0-9]{12}$" onkeydown="checkField(event,'aadharCardNo')" maxlength="12">
                             <span class="errorDanger text-danger" id="aadharCardDangerIcon">
                                 <i class="fa-solid fa-circle-exclamation"></i>
                             </span>

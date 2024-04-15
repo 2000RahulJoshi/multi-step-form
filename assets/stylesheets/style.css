@@ -64,7 +64,7 @@ label{
     font-weight: 500;
 }
 
-textarea{
+textarea,input{
     padding-right: 6% !important;
 }
 
